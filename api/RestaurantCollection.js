@@ -1,7 +1,6 @@
 const MongoDB = require('../db/MongoDB');
 
-const RestaurantData = app => {
-    let { io, mobileSockets } = app;
+const RestaurantData = io => {
     return {
         // get 
         GetRestaurantCollections: (request, response) => {
@@ -41,7 +40,6 @@ const RestaurantData = app => {
         // post
         // to add to multiple collections with only 1 network request
         AddToRestaurantCollections: (request, response) => {
-            console.log(mobileSockets);
             let { collectionIds, restaurantId } = request.body;
             collectionIds = JSON.parse(collectionIds);
             let promises = [];
@@ -56,20 +54,13 @@ const RestaurantData = app => {
                 }          
             })
             Promise.all(promises).then(result=>{
-                const emitRecipients = mobileSockets[]
                 collectionIds.forEach(id=>{
-                    const emitRecipients = mobileSockets[id];
-                    emitRecipients.forEach(socketId=>{
-                        io.to(socketId).emit('restaurantAdded', {
-                            restaurant: result[0],
-                            collectionId: id
-                        });
-                    })
+                    console.log(id);
+                    io.in(id).emit('restaurantAdded',{
+                        restaurant: result[0],
+                        collectionId: id
+                    });
                 })
-                // io.emit('restaurantAdded',{
-                //     restaurant: result[0],
-                //     collectionIds,
-                // });
                 response.status(200).send(result[0])
             }).catch(err=>{
                 response.status(400).send({ code: 400, message: err});
@@ -81,7 +72,12 @@ const RestaurantData = app => {
             let {collectionId, restaurantId} = request.body;
             MongoDB.RemoveFromRestaurantCollection(collectionId, restaurantId)
                 .then(result => {
-                    console.log(result);
+                    const { restaurantId, collectionId } = result;
+                    
+                    io.in(collectionId).emit('restaurantRemoved',{
+                        restaurantId,
+                        collectionId
+                    })
                     response.status(200).send(result)
                 })
                 .catch(err => {
@@ -94,7 +90,9 @@ const RestaurantData = app => {
             let {collectionId} = request.body
             MongoDB.DeleteRestaurantCollection(collectionId)
                 .then(result => {
-                    console.log(result);
+                    io.in(collectionId).emit('collectionDeleted', {
+                        collectionId
+                    })
                     response.status(200).send(result)
                 })
                 .catch(err => {

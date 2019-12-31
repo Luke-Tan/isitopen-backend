@@ -145,11 +145,15 @@ const MongoDB = {
                 { $pull: {restaurants: {"_id": mongoObjectId(restaurantId)}} },
                 function (err,result) {
                     if(err) reject(err);
-                    resolve(result); // Could do the deletion on the client side probably
+                    resolve({
+                        collectionId,
+                        restaurantId
+                    }); // Could do the deletion on the client side probably
                 }
             );
         })
     },
+    // One time endpoint used to transform the initial data from the CSV into a format that can be more easily filtered by day and time
     TransformData:()=>{
         return new Promise(async (resolve,reject)=>{
             const restaurantDataCollection = db.collection('RestaurantData');

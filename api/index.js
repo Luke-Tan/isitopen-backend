@@ -24,12 +24,12 @@ const Index = (app) => {
     app.get('/api/GetData', cors(corsOption), RestaurantData(io).GetData);
     app.get('/api/TransformData', cors(corsOption), RestaurantData(io).TransformData);
     //For all RestaurantCollection related db transactions
-    app.get('/api/GetRestaurantCollections', cors(corsOption), RestaurantCollection(app).GetRestaurantCollections);
-    app.post('/api/CreateRestaurantCollection', cors(corsOption), RestaurantCollection(app).CreateRestaurantCollection);
-    app.post('/api/AddToRestaurantCollection', cors(corsOption), RestaurantCollection(app).AddToRestaurantCollection);
-    app.post('/api/AddToRestaurantCollections', cors(corsOption), RestaurantCollection(app).AddToRestaurantCollections);
-    app.post('/api/RemoveFromRestaurantCollection', cors(corsOption), RestaurantCollection(app).RemoveFromRestaurantCollection);
-    app.post('/api/DeleteRestaurantCollection', cors(corsOption), RestaurantCollection(app).DeleteRestaurantCollection);
+    app.get('/api/GetRestaurantCollections', cors(corsOption), RestaurantCollection(io).GetRestaurantCollections);
+    app.post('/api/CreateRestaurantCollection', cors(corsOption), RestaurantCollection(io).CreateRestaurantCollection);
+    app.post('/api/AddToRestaurantCollection', cors(corsOption), RestaurantCollection(io).AddToRestaurantCollection);
+    app.post('/api/AddToRestaurantCollections', cors(corsOption), RestaurantCollection(io).AddToRestaurantCollections);
+    app.post('/api/RemoveFromRestaurantCollection', cors(corsOption), RestaurantCollection(io).RemoveFromRestaurantCollection);
+    app.post('/api/DeleteRestaurantCollection', cors(corsOption), RestaurantCollection(io).DeleteRestaurantCollection);
     //For all email related actions
     app.post('/api/InviteFriends', cors(corsOption), Email.InviteFriends);
 }

@@ -7,7 +7,7 @@ const MongoDB = require('./db/MongoDB.js')
 const app = express();
 
 
-app.set('port', process.env.PORT || process.env.NODE_ENV == 'staging'?3001:8080);
+app.set('port', process.env.PORT || 8080);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use( express.static( __dirname + '/public' ));
 app.use(bodyParser.json());
@@ -30,24 +30,26 @@ app.use(bodyParser.json());
  */
 const server = http.createServer(app);
 const io = require('socket.io')(server);
-let mobileSockets = {};
 
 //Schedule the poll topic to be changed everyday everyday
-
 io.on('connection', socket => {
-	socket.on('login', subscribedCollections => {
-		subscribedCollections.forEach(collection=>{
-			if(mobileSockets[collection]){
-				mobileSockets[collection].push(socket.id)
-			} else {
-				mobileSockets[collection] = [socket.id]
-			}
-		})
+	socket.on('initialSubscription', collectionIds => {
+		try {
+			collectionIds.forEach(collectionId=>{
+				// Join the collection room to receive all updates to this collection in real time
+				socket.join(collectionId);
+			})			
+		} catch (error){
+			console.log(error);
+		}
 	});
+	socket.on('subscription', collection => {
+		socket.join(collection);
+	})
 })
 
+//Bind io to app for access at the api level
 app.io = io;
-app.mobileSockets = mobileSockets
 
 // Handles normal API routes first
 require('./api/index')(app);
