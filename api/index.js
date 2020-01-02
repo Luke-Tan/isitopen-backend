@@ -61,6 +61,11 @@ const Index = app => {
     cors(corsOption),
     RestaurantCollection(io).DeleteRestaurantCollection
   );
+  app.post(
+    "/api/RenameRestaurantCollection",
+    cors(corsOption),
+    RestaurantCollection(io).RenameRestaurantCollection
+  );
   //For all email related actions
   app.post("/api/InviteFriends", cors(corsOption), Email.InviteFriends);
 };

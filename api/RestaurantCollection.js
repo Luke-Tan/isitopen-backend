@@ -73,14 +73,14 @@ const RestaurantData = io => {
     },
     //post
     RemoveFromRestaurantCollection: (request, response) => {
-      let { collectionId, restaurantId } = request.body;
+      const { collectionId, restaurantId } = request.body;
       MongoDB.RemoveFromRestaurantCollection(collectionId, restaurantId)
         .then(result => {
-          const { restaurantId, collectionId } = result;
+          const { collectionId, restaurantId} = result;
 
           io.in(collectionId).emit("restaurantRemoved", {
-            restaurantId,
-            collectionId
+            collectionId,
+            restaurantId
           });
           response.status(200).send(result);
         })
@@ -91,11 +91,27 @@ const RestaurantData = io => {
     },
     //post
     DeleteRestaurantCollection: (request, response) => {
-      let { collectionId } = request.body;
+      const { collectionId } = request.body;
       MongoDB.DeleteRestaurantCollection(collectionId)
         .then(result => {
           io.in(collectionId).emit("collectionDeleted", {
             collectionId
+          });
+          response.status(200).send(result);
+        })
+        .catch(err => {
+          console.log(err);
+          response.status(400).send({ code: 400, message: err });
+        });
+    },
+    //post
+    RenameRestaurantCollection: (request, response) => {
+      const { collectionId, name} = request.body;
+      MongoDB.RenameRestaurantCollection(collectionId, name)
+        .then(result => {
+          io.in(collectionId).emit("collectionRenamed", {
+            collectionId,
+            name
           });
           response.status(200).send(result);
         })

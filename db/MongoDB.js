@@ -162,6 +162,21 @@ const MongoDB = {
       );
     });
   },
+  RenameRestaurantCollection: (collectionId, name) => {
+    return new Promise(async (resolve, reject) => {
+      const restaurantCollectionsCollection = db.collection(
+        "RestaurantCollections"
+      );
+      restaurantCollectionsCollection.updateOne(
+        { _id: mongoObjectId(collectionId) },
+        { $set: {name}},
+        function(err, result) {
+          if (err) reject(err);
+          resolve(result);
+        }
+      );
+    });
+  },
   RemoveFromRestaurantCollection: (collectionId, restaurantId) => {
     return new Promise(async (resolve, reject) => {
       const restaurantCollectionsCollection = db.collection(
