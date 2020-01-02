@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/build"));
 app.use(bodyParser.json());
 
-  console.log(process.env.SERVE_ENV);
+  console.log(process.env.NODE_ENV);
 /**
  * Simple route to send index.html
  * also, due to react's routing behaviour,
@@ -22,7 +22,7 @@ app.use(bodyParser.json());
  * Running NodeJS as a server
  */
 const server = http.createServer(app);
-const io = require("socket.io").listen(server, {transports: ['websocket']});
+const io = require("socket.io")(server);
 
 //Schedule the poll topic to be changed everyday everyday
 io.on("connection", socket => {
@@ -43,6 +43,8 @@ io.on("connection", socket => {
 
 //Bind io to app for access at the api level
 app.io = io;
+// Handles normal API routes first
+require("./api/index")(app);
 
 app.get('/', function (request, response) {
   response.sendFile(path.join(__dirname, 'build', 'index.html'));
@@ -53,8 +55,6 @@ app.get('*', function (request, response) {
 });
 
 
-// Handles normal API routes first
-require("./api/index")(app);
 
 server.listen(app.get("port"), function() {
   console.log("Express server is listening on " + app.get("port"));
