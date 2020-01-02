@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "env SERVE_ENV='build' nodemon index.js",
+    "start": "env SERVE_ENV='build' node index.js",
+    "dev": "nodemon index.js",
+    "dev-build": "env SERVE_ENV='build' nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "format": "prettier --write --no-semi ./*.js ./db/*.js ./api/*.js"
   },
