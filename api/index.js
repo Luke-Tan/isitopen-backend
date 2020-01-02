@@ -9,6 +9,8 @@ let whitelist = ["http://localhost:3000", "http://glints-luke.herokuapp.com/", "
 const corsOption = {
   origin: (origin, callback) => {
     const originIsWhitelisted = whitelist.indexOf(origin) != -1;
+    console.error(whitelist)
+    console.error(origin)
     callback(originIsWhitelisted ? null : "Bad Request", originIsWhitelisted);
   }
 };
