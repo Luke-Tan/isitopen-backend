@@ -22,7 +22,7 @@ app.use(bodyParser.json());
  * Running NodeJS as a server
  */
 const server = http.createServer(app);
-const io = require("socket.io")(server);
+const io = require("socket.io").listen(server);
 
 //Schedule the poll topic to be changed everyday everyday
 io.on("connection", socket => {
