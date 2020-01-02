@@ -44,9 +44,6 @@ io.on("connection", socket => {
 //Bind io to app for access at the api level
 app.io = io;
 
-// Handles normal API routes first
-require("./api/index")(app);
-
 app.get('/', function (request, response) {
   response.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
@@ -54,6 +51,10 @@ app.get('/', function (request, response) {
 app.get('*', function (request, response) {
   response.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
+
+
+// Handles normal API routes first
+require("./api/index")(app);
 
 server.listen(app.get("port"), function() {
   console.log("Express server is listening on " + app.get("port"));
