@@ -8,7 +8,7 @@ const app = express();
 
 app.set("port", process.env.PORT || 8080);
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(__dirname + "/build"));
+app.use(express.static(__dirname + "/client/build"));
 app.use(bodyParser.json());
 /**
  * Simple route to send index.html
@@ -45,11 +45,11 @@ app.io = io;
 require("./api/index")(app);
 
 app.get('/', function (request, response) {
-  response.sendFile(path.join(__dirname, 'build', 'index.html'));
+  response.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
 app.get('*', function (request, response) {
-  response.sendFile(path.join(__dirname, 'build', 'index.html'));
+  response.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
 
