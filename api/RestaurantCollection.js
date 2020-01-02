@@ -58,12 +58,13 @@ const RestaurantData = io => {
       });
       Promise.all(promises)
         .then(result => {
-          collectionIds.forEach(id => {
-            console.log(id);
-            io.in(id).emit("restaurantAdded", {
-              restaurant: result[0],
-              collectionId: id
-            });
+          collectionIds.forEach((id, index) => {
+            if(result[index]){
+              io.in(id).emit("restaurantAdded", {
+                restaurant: result[index],
+                collectionId: id
+              });              
+            }
           });
           response.status(200).send(result[0]);
         })

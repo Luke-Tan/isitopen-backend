@@ -141,7 +141,7 @@ const MongoDB = {
             }
           );
         } else {
-          reject("This restaurant already exists in this collection!");
+          resolve(false);
         }
       } catch (err) {
         reject(err);
