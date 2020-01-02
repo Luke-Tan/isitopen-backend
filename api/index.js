@@ -4,7 +4,7 @@ const RestaurantCollection = require("./RestaurantCollection");
 const Email = require("./Email");
 
 // Currently hardcoded
-let whitelist = ["http://localhost:3000", undefined];
+let whitelist = ["http://localhost:3000", "https://glints-luke.herokuapp.com/", "http://localhost:8080", undefined];
 
 const corsOption = {
   origin: (origin, callback) => {

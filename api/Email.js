@@ -9,16 +9,16 @@ const Email = {
     let transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "journyal@gmail.com",
-        pass: "9interestingmudfiSh5"
+        user: "glints.isitopen@gmail.com",
+        pass: "thisisaveryinsecurepassword"
       }
     });
 
     const mailOptions = {
-      from: "journyal@gmail.com",
+      from: "Hello!",
       to: emails.join(", "), //Converts emails into a string seperated by commas
-      subject: "Sending Email using Node.js",
-      text: `Your friend has invited you to collaborate with him on his restaurant collection, ${name}, you can access it at http://localhost:3000?invitedCollection=${_id}`
+      subject: "You've been invited to collaborate on a collection of restaurants!",
+      text: `Your friend has invited you to collaborate with him on his restaurant collection, ${name}. \nYou can access it at http://localhost:3000?invitedCollection=${_id}`
     };
     transporter.sendMail(mailOptions, function(error, info) {
       if (error) {

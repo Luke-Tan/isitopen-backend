@@ -8,7 +8,7 @@ const app = express();
 
 app.set("port", process.env.PORT || 8080);
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/build"));
 app.use(bodyParser.json());
 
 /**
@@ -16,13 +16,6 @@ app.use(bodyParser.json());
  * also, due to react's routing behaviour,
  * there needs to be an exception for * (all the routes)
  */
-// app.get('/', function (request, response) {
-// 	response.sendFile(path.resolve('./public/index.html'));
-// });
-
-// app.get('*', function (request, response) {
-// 	response.sendFile(path.resolve('./public/index.html'));
-// });
 
 /**
  * Running NodeJS as a server
@@ -52,6 +45,14 @@ app.io = io;
 
 // Handles normal API routes first
 require("./api/index")(app);
+
+app.get('/', function (request, response) {
+  response.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+app.get('*', function (request, response) {
+  response.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 server.listen(app.get("port"), function() {
   console.log("Express server is listening on " + app.get("port"));
