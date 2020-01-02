@@ -11,6 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/build"));
 app.use(bodyParser.json());
 
+
 /**
  * Simple route to send index.html
  * also, due to react's routing behaviour,
@@ -47,6 +48,7 @@ app.io = io;
 require("./api/index")(app);
 
 app.get('/', function (request, response) {
+  console.log(process.env.SERVE_ENV);
   response.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
