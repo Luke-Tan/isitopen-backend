@@ -10,6 +10,7 @@ app.set("port", process.env.PORT || 8080);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/build"));
 app.use(bodyParser.json());
+
 /**
  * Simple route to send index.html
  * also, due to react's routing behaviour,
@@ -20,7 +21,7 @@ app.use(bodyParser.json());
  * Running NodeJS as a server
  */
 const server = http.createServer(app);
-const io = require("socket.io")(server,{transports: ['websocket']});
+const io = require("socket.io")(server);
 
 //Schedule the poll topic to be changed everyday everyday
 io.on("connection", socket => {
